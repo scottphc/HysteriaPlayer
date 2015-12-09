@@ -873,8 +873,13 @@ static dispatch_once_t onceToken;
 #if TARGET_OS_IPHONE
     [[AVAudioSession sharedInstance] setActive:NO error:&error];
     [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionInterruptionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:nil];
 #endif
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:nil];
     
     [self.audioPlayer removeObserver:self forKeyPath:@"status" context:nil];
     [self.audioPlayer removeObserver:self forKeyPath:@"rate" context:nil];
